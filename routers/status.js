@@ -29,7 +29,7 @@ module.exports.entrypoint = function router_status(parsedURL, body, req, res) {
       res.write('OK, server available !');
     } else {
       res.setHeader('Content-Type', 'text/plain');
-      res.statusCode = 400;
+      res.statusCode = 503;
       res.write('ERROR, server unavailable !');
     }
     break;
