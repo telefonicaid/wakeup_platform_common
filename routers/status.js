@@ -45,6 +45,13 @@ module.exports.entrypoint = function router_status(parsedURL, body, req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.statusCode = 200;
     break;
+  case 'OPTIONS':
+    // CORS support
+    log.debug('WU_Router_exports --> Received an OPTIONS method');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.statusCode = 200;
+    break;
   default:
     response.setHeader('Content-Type', 'text/plain');
     response.statusCode = 405;
