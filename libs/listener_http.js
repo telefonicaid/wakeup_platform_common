@@ -72,7 +72,7 @@ ListenerHttp.prototype = {
       response.end();
       return;
     }
-    log.info('New message to ' + request.url + ' from ' +
+    log.debug('New message to ' + request.url + ' from ' +
       request.headers['x-client-cert-dn']);
 
     var _url = url.parse(request.url);
