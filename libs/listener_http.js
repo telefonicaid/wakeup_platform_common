@@ -59,8 +59,8 @@ ListenerHttp.prototype = {
     log.debug('onHTTPMessage: Received Headers: ', request.headers);
 
     // Set id for tracking purposes
-    if (!request.headers['id']) {
-      request.headers['id'] = helpers.uuid();
+    if (!request.headers['x-tracking-id']) {
+      request.headers['x-tracking-id'] = helpers.uuid();
     }
 
     var msg = '';
