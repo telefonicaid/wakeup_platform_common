@@ -59,8 +59,10 @@ ListenerHttp.prototype = {
     log.debug('onHTTPMessage: Received Headers: ', request.headers);
 
     // Set id for tracking purposes
-    if (!request.headers['x-tracking-id']) {
-      request.headers['x-tracking-id'] = helpers.uuid();
+    var xTrackingID = request.headers['x-tracking-id'];
+    if (!xTrackingID) {
+      xTrackingID = helpers.uuid();
+      request.headers['x-tracking-id'] = xTrackingID;
     }
 
     var msg = '';
@@ -76,6 +78,8 @@ ListenerHttp.prototype = {
       request.headers['x-client-cert-dn']);
 
     var _url = url.parse(request.url);
+    // Set tracking header
+    response.setHeader('x-tracking-id', xTrackingID);
 
     // Check router existance
     if (this.routers[_url.pathname]) {
