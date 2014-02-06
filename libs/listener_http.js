@@ -9,6 +9,7 @@
 
 var config = process.configuration,
     log = require('./logger'),
+    helpers = require('./helpers'),
     url = require('url');
 
 function ListenerHttp(ip, port, ssl, routers, callback) {
@@ -56,6 +57,11 @@ ListenerHttp.prototype = {
   //////////////////////////////////////////////
   onHTTPMessage: function(request, response) {
     log.debug('onHTTPMessage: Received Headers: ', request.headers);
+
+    // Set id for tracking purposes
+    if (!request.headers['x-tracking-id']) {
+      request.headers['x-tracking-id'] = helpers.uuid();
+    }
 
     var msg = '';
     if (request.headers['x-client-cert-verified'] !== 'SUCCESS') {
