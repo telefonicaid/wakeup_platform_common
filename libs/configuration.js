@@ -10,6 +10,13 @@
 var fs = require('fs');
 var configFile = null;
 
+if (process.configuration) {
+  // If process.configuration is defined (Unit Testing, for example)
+  // we export it, if no, we'll load a new config file
+  module.exports = process.configuration;
+  return;
+}
+
 if (process.env.WAKEUP_CONFIG) {
   configFile = process.env.WAKEUP_CONFIG;
 }
