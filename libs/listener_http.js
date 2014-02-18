@@ -66,6 +66,7 @@ ListenerHttp.prototype = {
     }
 
     var msg = '';
+    var _url = url.parse(request.url);
     if (request.headers['x-client-cert-verified'] !== 'SUCCESS') {
       log.error('Received certificate not accepted by SSL terminator !');
       response.setHeader('Content-Type', 'text/plain');
@@ -73,11 +74,15 @@ ListenerHttp.prototype = {
       response.write('Client certificate not accepted');
       response.end();
       return;
+    } else if (_url.pathname === '/about') {
+      request.headers['x-client-cert-verified'] =
+            request.headers['x-client-cert-verified'] || 'SUCCESS';
+      request.headers['x-client-cert-dn'] =
+            request.headers['x-client-cert-dn'] || 'DN=plain_http_request';
     }
     log.debug('New message to ' + request.url + ' from ' +
       request.headers['x-client-cert-dn']);
 
-    var _url = url.parse(request.url);
     // Set tracking header
     response.setHeader('x-tracking-id', xTrackingID);
 
