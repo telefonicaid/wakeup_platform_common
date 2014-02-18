@@ -65,24 +65,31 @@ ListenerHttp.prototype = {
       request.headers['x-tracking-id'] = xTrackingID;
     }
 
-    var msg = '';
-    if (request.headers['x-client-cert-verified'] !== 'SUCCESS') {
+    var _url = url.parse(request.url);
+    var router = this.routers[_url.pathname];
+    if ((request.headers['x-client-cert-verified'] !== 'SUCCESS') &&
+        (router.unsafe !== true)) {
       log.error('Received certificate not accepted by SSL terminator !');
       response.setHeader('Content-Type', 'text/plain');
       response.statusCode = 400;
       response.write('Client certificate not accepted');
       response.end();
       return;
+    } else {
+      request.headers['x-client-cert-verified'] =
+            request.headers['x-client-cert-verified'] || 'SUCCESS';
+      request.headers['x-client-cert-dn'] =
+            request.headers['x-client-cert-dn'] || 'CN=unsafe_request';
     }
+
     log.debug('New message to ' + request.url + ' from ' +
       request.headers['x-client-cert-dn']);
 
-    var _url = url.parse(request.url);
     // Set tracking header
     response.setHeader('x-tracking-id', xTrackingID);
 
     // Check router existance
-    if (this.routers[_url.pathname]) {
+    if (router.func) {
       log.debug('Yeah!, router found !');
       var body = '',
           self = this;
@@ -90,7 +97,7 @@ ListenerHttp.prototype = {
         body += data;
       });
       request.on('end', function() {
-        self.routers[_url.pathname](_url, body, request, response, self.cb);
+        router.func(_url, body, request, response, self.cb);
         response.end();
       });
     } else {

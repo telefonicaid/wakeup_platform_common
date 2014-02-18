@@ -14,7 +14,9 @@ module.exports.info = {
   name: 'statusRouter',
   type: 'router',
   virtualpath: 'status',
-  description: 'Used to check server status. Needed by load-balancers'
+  description: 'Used to check server status. Needed by load-balancers',
+  // Accessible without client-side certificate
+  unsafe: true
 };
 
 var server_status = {
