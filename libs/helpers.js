@@ -1,4 +1,3 @@
-/* jshint node: true */
 /**
  * Wake Up Platform
  * (c) Telefonica Digital, 2014 - All rights reserved
