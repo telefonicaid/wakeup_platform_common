@@ -8,6 +8,8 @@
 
 'use strict';
 
+var net = require('net');
+
 module.exports.checkCallback = function checkCallback(callback) {
     if (typeof(callback) != 'function') {
       callback = function() {};
