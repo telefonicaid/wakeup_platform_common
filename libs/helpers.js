@@ -26,3 +26,17 @@ module.exports.uuid = function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 };
+
+module.exports.isIPInNetwork = function isIPInNetwork(ip, network) {
+    var split = network.split('/');
+    var ad1 = __ipAddr2Int(ip);
+    var ad2 = __ipAddr2Int(split[0]);
+    var mask = -1 << (32 - split[1]);
+
+    return (ad1 & mask) == ad2;
+}
+
+function __ipAddr2Int(ip) {
+    var split = ip.split('.');
+    return split[0] << 24 | split[1] << 16 | split[2] << 8 | split[3];
+}
