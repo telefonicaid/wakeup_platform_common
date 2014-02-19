@@ -26,13 +26,35 @@ module.exports.uuid = function guid() {
       s4() + '-' + s4() + s4() + s4();
 };
 
-module.exports.isIPInNetwork = function isIPInNetwork(ip, network) {
-    var split = network.split('/');
-    var ad1 = __ipAddr2Int(ip);
-    var ad2 = __ipAddr2Int(split[0]);
-    var mask = -1 << (32 - split[1]);
+module.exports.isIPInNetwork = function isIPInNetwork(ip, networks) {
+    if (!net.isIP(ip)) {
+        return false;
+    }
 
-    return (ad1 & mask) == ad2;
+    if (!Array.isArray(networks)) {
+        networks = [networks];
+    }
+
+    //If IP is in one of the network ranges, we think that you are in a
+    //private network and can be woken up.
+    return __isIPInNetworks(ip, networks);
+}
+
+function __isIPInNetworks(ip, networks) {
+    var rv = false;
+    networks.forEach(function(network) {
+        //If is found in other network, return.
+        if (rv) {
+            return;
+        }
+        var split = network.split('/');
+        var ad1 = __ipAddr2Int(ip);
+        var ad2 = __ipAddr2Int(split[0]);
+        var mask = -1 << (32 - split[1]);
+
+        rv = (ad1 & mask) == ad2;
+    });
+    return rv;
 }
 
 function __ipAddr2Int(ip) {
