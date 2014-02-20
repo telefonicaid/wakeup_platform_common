@@ -64,6 +64,9 @@ ListenerHttp.prototype = {
       xTrackingID = helpers.uuid();
       request.headers['x-tracking-id'] = xTrackingID;
     }
+    
+    // Set tracking header
+    response.setHeader('x-tracking-id', xTrackingID);
 
     var _url = url.parse(request.url);
     var router = this.routers[_url.pathname];
@@ -91,9 +94,6 @@ ListenerHttp.prototype = {
 
     log.debug('New message to ' + request.url + ' from ' +
       request.headers['x-client-cert-dn']);
-
-    // Set tracking header
-    response.setHeader('x-tracking-id', xTrackingID);
 
     var body = '',
         self = this;
