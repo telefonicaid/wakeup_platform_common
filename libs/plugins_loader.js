@@ -69,12 +69,15 @@ module.exports = (function PluginsLoader() {
       var self = this;
       Object.keys(pluginsRouters).forEach(function(routerId) {
         if (pluginsRouters[routerId].info.virtualpath) {
-          self.routers['/' + pluginsRouters[routerId].info.virtualpath] =
-            pluginsRouters[routerId].entrypoint;
+          self.routers['/' + pluginsRouters[routerId].info.virtualpath] = {
+            func: pluginsRouters[routerId].entrypoint,
+            unsafe: pluginsRouters[routerId].info.unsafe
+          };
 
           log.debug('WU_PluginsLoader::get_routers - Loaded router ' +
             pluginsRouters[routerId].info.name + ' - on virtualpath: /' +
-            pluginsRouters[routerId].info.virtualpath);
+            pluginsRouters[routerId].info.virtualpath + ' and it is ' +
+            (pluginsRouters[routerId].info.unsafe ? 'unsafe' : 'safe'));
 
           if (pluginsRouters[routerId].info.description) {
             log.debug('WU_PluginsLoader::get_routers - INFO: /' +
@@ -87,7 +90,10 @@ module.exports = (function PluginsLoader() {
             pluginsRouters[routerId].info.alias.forEach(function(alias) {
               log.debug('WU_PluginsLoader::get_routers - Alias /' + alias +
                 ' = /' + pluginsRouters[routerId].info.virtualpath);
-              self.routers['/' + alias] = pluginsRouters[routerId].entrypoint;
+              self.routers['/' + alias] = {
+                func: pluginsRouters[routerId].entrypoint,
+                unsafe: pluginsRouters[routerId].info.unsafe
+              };
             });
           }
         }
