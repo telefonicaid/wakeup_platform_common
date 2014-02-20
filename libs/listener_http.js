@@ -76,6 +76,7 @@ ListenerHttp.prototype = {
         response.write('Not found');
         log.warn('Bad query ' + request.url + ', router not found');
         response.end();
+        return;
     }
     if ((request.headers['x-client-cert-verified'] !== 'SUCCESS') &&
         (router.unsafe !== true)) {
