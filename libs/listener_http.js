@@ -67,6 +67,13 @@ ListenerHttp.prototype = {
 
     var _url = url.parse(request.url);
     var router = this.routers[_url.pathname];
+    if (!router || !router.func) {
+        response.setHeader('Content-Type', 'text/plain');
+        response.statusCode = 404;
+        response.write('Not found');
+        log.warn('Bad query ' + request.url + ', router not found');
+        response.end();
+    }
     if ((request.headers['x-client-cert-verified'] !== 'SUCCESS') &&
         (router.unsafe !== true)) {
       log.error('Received certificate not accepted by SSL terminator !');
@@ -88,25 +95,15 @@ ListenerHttp.prototype = {
     // Set tracking header
     response.setHeader('x-tracking-id', xTrackingID);
 
-    // Check router existance
-    if (router.func) {
-      log.debug('Yeah!, router found !');
-      var body = '',
-          self = this;
-      request.on('data', function(data) {
+    var body = '',
+        self = this;
+    request.on('data', function(data) {
         body += data;
-      });
-      request.on('end', function() {
+    });
+    request.on('end', function() {
         router.func(_url, body, request, response, self.cb);
         response.end();
-      });
-    } else {
-      response.setHeader('Content-Type', 'text/plain');
-      response.statusCode = 404;
-      response.write('Not found');
-      log.warn('Bad query ' + request.url + ', router not found');
-      response.end();
-    }
+    });
   }
 };
 
