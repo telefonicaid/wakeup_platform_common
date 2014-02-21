@@ -12,7 +12,7 @@ var net = require('net');
 
 module.exports.checkCallback = function checkCallback(callback) {
     if (typeof(callback) != 'function') {
-      callback = function() {};
+        callback = function() {};
     }
     return callback;
 };
@@ -40,7 +40,7 @@ module.exports.isIPInNetwork = function isIPInNetwork(ip, networks) {
     //If IP is in one of the network ranges, we think that you are in a
     //private network and can be woken up.
     return __isIPInNetworks(ip, networks);
-}
+};
 
 function __isIPInNetworks(ip, networks) {
     var rv = false;
