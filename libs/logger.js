@@ -141,6 +141,9 @@ function logger() {
     console.warn =function(msg) {
         _alert(msg);
     };
+    console.trace = function(msg) {
+        process.stdout.write(msg + ' ' + new Error().stack);
+    };
 
     return {
         loglevels: loglevel,
