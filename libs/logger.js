@@ -50,10 +50,10 @@ function logger() {
         ALARM: 64
     };
     var params = {
-        LOGLEVEL: loglevel.DEBUG | loglevel.INFO | loglevel.ERROR |
+        loglevel: loglevel.DEBUG | loglevel.INFO | loglevel.ERROR |
                   loglevel.CRITICAL | loglevel.ALERT | loglevel.NOTIFY |
                   loglevel.ALARM,
-        APPNAME: 'Unknown'
+        appname: 'Unknown'
     };
 
     function log(level, message, trace, color, object) {
@@ -76,7 +76,7 @@ function logger() {
 
         var logheader = '[' +
             (new Date().toISOString().replace('T',' ').replace('Z','')) +
-            '] [' + level + '] ' + params.APPNAME + ' - ';
+            '] [' + level + '] ' + params.appname + ' - ';
         var logmsg = color + logheader + ANSIColors.reset + message
         if (object) {
             logmsg += ' ' + ANSIColors.PURPLE + JSON.stringify(object);
@@ -89,12 +89,12 @@ function logger() {
     }
 
     function _debug(message, object) {
-        if (params.LOGLEVEL & loglevel.DEBUG) {
+        if (params.loglevel & loglevel.DEBUG) {
             log('DEBUG', message, false, ANSIColors.cyan, object);
         }
     }
     function _critical(message, object) {
-        if (params.LOGLEVEL & loglevel.CRITICAL) {
+        if (params.loglevel & loglevel.CRITICAL) {
             log('CRITICAL', message, true, ANSIColors.RED, object);
         }
         log('CRITICAL', 'WE HAVE A CRITICAL ERROR, WE ARE CLOSING!!!', false, ANSIColors.red);
@@ -103,27 +103,27 @@ function logger() {
         }, 2000);
     }
     function _info(message, object) {
-        if (params.LOGLEVEL & loglevel.INFO) {
+        if (params.loglevel & loglevel.INFO) {
             log('INFO', message, false, ANSIColors.green, object);
         }
     }
     function _error(message, object) {
-        if (params.LOGLEVEL & loglevel.ERROR) {
+        if (params.loglevel & loglevel.ERROR) {
             log('ERROR', message, true, ANSIColors.red, object);
         }
     }
     function _alert(message, object) {
-        if (params.LOGLEVEL & loglevel.ALERT) {
+        if (params.loglevel & loglevel.ALERT) {
             log('ALERT', message, false, ANSIColors.purple, object);
         }
     }
     function _notify(message, object) {
-        if (params.LOGLEVEL & loglevel.NOTIFY) {
+        if (params.loglevel & loglevel.NOTIFY) {
             log('NOTIFY', message, false, ANSIColors.yellow, object);
         }
     }
     function _alarm(message, object) {
-        if (params.LOGLEVEL & loglevel.ALARM) {
+        if (params.loglevel & loglevel.ALARM) {
             log('ALARM', message, true, ANSIColors.RED, object);
         }
     }

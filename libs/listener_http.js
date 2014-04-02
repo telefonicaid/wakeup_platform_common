@@ -17,7 +17,7 @@ var config = process.configuration,
 function ListenerHttp(ip, port, ssl, routers, callback) {
     if (typeof(callback) != 'function') {
         callback = function() {
-            log.fatal('WU_ListenerHTTP: No wakeup callback method defined !');
+            log.critical('WU_ListenerHTTP: No wakeup callback method defined !');
         };
     }
     this.routers = routers;
@@ -76,7 +76,7 @@ ListenerHttp.prototype = {
             response.setHeader('Content-Type', 'text/plain');
             response.statusCode = 404;
             response.write('Not found');
-            log.warn('Bad query ' + request.url + ', router not found');
+            log.alert('Bad query ' + request.url + ', router not found');
             response.end();
             return;
         }
