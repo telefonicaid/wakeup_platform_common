@@ -43,10 +43,10 @@ module.exports = (function PluginsLoader() {
                                 plugin.info.name + ' = ' + plugin.info.description);
                         }
                     } else {
-                        log.error('JARL');
+                        log.error('WU_PluginsLoader::load - Plugin bad defined');
                     }
                 } catch (e) {
-                    log.debug('WU_PluginsLoader::load - Not valid plugin ' +
+                    log.error('WU_PluginsLoader::load - Not valid plugin ' +
                         filename);
                 }
             }
