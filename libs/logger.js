@@ -74,8 +74,15 @@ function logger() {
 
         // Print trace
 
+        var now = new Date();
         var logheader = '[' +
-            (new Date().toISOString().replace('T',' ').replace('Z','')) +
+            now.getFullYear() + '-' +
+            String('00' + now.getMonth()).slice(-2) + '-' +
+            String('00' + now.getDay()).slice(-2) + ' ' +
+            String('00' + now.getHours()).slice(-2) + ':' +
+            String('00' + now.getMinutes()).slice(-2) + ':' +
+            String('00' + now.getSeconds()).slice(-2) + '.' +
+            String('000' + now.getMilliseconds()).slice(-3) +
             '] [' + level + '] ' + params.appname + ' - ';
         var logmsg = color + logheader + ANSIColors.reset + message
         if (object) {
